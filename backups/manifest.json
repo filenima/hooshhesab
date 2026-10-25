@@ -1,0 +1,20 @@
+[
+  {
+    "name": "hoosh-backup-2026-10-24-213008.db",
+    "size": 16338944,
+    "createdAt": "2026-10-24T21:30:08.383Z",
+    "trigger": "auto"
+  },
+  {
+    "name": "hoosh-backup-2026-10-23-192622.db",
+    "size": 2985984,
+    "createdAt": "2026-10-23T19:26:22.291Z",
+    "trigger": "auto"
+  },
+  {
+    "name": "hoosh-backup-2026-10-05-184027.db",
+    "size": 9773056,
+    "createdAt": "2026-10-05T18:40:27.122Z",
+    "trigger": "auto"
+  }
+]

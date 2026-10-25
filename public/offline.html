@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>هوش حساب — حالت آفلاین</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: Tahoma, Arial, sans-serif;
+    background: linear-gradient(135deg, #12304A 0%, #1F8477 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    padding: 20px;
+  }
+  .card {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 40px 32px;
+    max-width: 440px;
+    width: 100%;
+    text-align: center;
+    backdrop-filter: blur(10px);
+  }
+  .icon {
+    width: 76px; height: 76px;
+    margin: 0 auto 20px;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 36px;
+  }
+  h1 { font-size: 21px; margin-bottom: 12px; }
+  p { font-size: 14px; line-height: 1.9; opacity: 0.92; margin-bottom: 8px; }
+  ul { text-align: right; font-size: 13px; line-height: 2; opacity: 0.88; margin: 14px 24px 22px; }
+  ul li::before { content: "✓ "; color: #7EE3D2; font-weight: bold; }
+  button {
+    background: #fff;
+    color: #12304A;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 28px;
+    font-size: 15px;
+    font-weight: bold;
+    font-family: inherit;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  button:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,0,0,0.25); }
+  .pulse {
+    display: inline-flex; align-items: center; gap: 8px;
+    margin-top: 18px; font-size: 12px; opacity: 0.75;
+  }
+  .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #7EE3D2;
+    animation: pulse 1.6s infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(126, 227, 210, 0.5); }
+    70% { box-shadow: 0 0 0 8px rgba(126, 227, 210, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(126, 227, 210, 0); }
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon">📶</div>
+    <h1>در حالت آفلاین هستید</h1>
+    <p>نگران نباشید — هوش حساب کامل آفلاین کار می‌کند:</p>
+    <ul>
+      <li>صفحه‌ها و آخرین داده‌های شما ذخیره شده‌اند</li>
+      <li>ثبت‌های شما در صف امن محلی نگهداری می‌شوند</li>
+      <li>با وصل‌شدن اینترنت، همه‌چیز خودکار همگام می‌شود</li>
+    </ul>
+    <button id="retryBtn">تلاش برای بازگشت به برنامه</button>
+    <div class="pulse">
+      <span class="dot"></span>
+      <span>به‌محض اتصال، خودکار باز می‌گردیم…</span>
+    </div>
+  </div>
+  <script>
+    /* ============================================================
+     * مسیر بازگشت — v36:
+     * این پوسته دو حالت سرو می‌شود:
+     *  ۱) به‌صورت inline (سرویس‌ورکر پاسخ ناوبریِ مثلاً /invoices را با همین
+     *     HTML جواب می‌دهد) → آدرسِ خود صفحه همان مقصد است (location).
+     *  ۲) مستقیم روی /offline.html?return=/invoices → از پارامتر query.
+     * سرویس‌ورکر در حالت ۱ مسیر مقصد را با window.HOOSH_RETURN_PATH تزریق می‌کند.
+     * نتیجه: صفحه دیگر «مسیر را گم نمی‌کند» و به همان جایی که کاربر بود برمی‌گردد.
+     */
+    var returnPath = "";
+    try {
+      if (window.HOOSH_RETURN_PATH && window.HOOSH_RETURN_PATH.charAt(0) === "/") {
+        returnPath = window.HOOSH_RETURN_PATH;
+      } else if (location.pathname !== "/offline.html" && location.pathname !== "/offline") {
+        returnPath = location.pathname + (location.search || "");
+      } else {
+        var q = new URLSearchParams(location.search).get("return");
+        if (q && q.charAt(0) === "/") returnPath = q;
+      }
+    } catch (e) {}
+    if (!returnPath || returnPath.charAt(0) !== "/") returnPath = "/";
+
+    function goBack() { location.replace(returnPath); }
+
+    var btn = document.getElementById("retryBtn");
+    if (btn) btn.addEventListener("click", goBack);
+
+    // بازگشت خودکار به محض اتصال اینترنت — به همان مسیر قبلی
+    window.addEventListener("online", function () {
+      setTimeout(goBack, 900);
+    });
+    // تلاش دوره‌ای سبک (هر ۷ ثانیه) — اگر شبکه برگشت ولی event نیامد.
+    // سرویس‌ورکر در آفلاین به /api/health کد ۵۰۳ می‌دهد → res.ok=false → می‌مانیم.
+    setInterval(function () {
+      if (navigator.onLine) {
+        fetch("/api/health", { method: "HEAD" })
+          .then(function (res) { if (res.ok) goBack(); })
+          .catch(function () {});
+      }
+    }, 7000);
+  </script>
+</body>
+</html>

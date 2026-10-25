@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1280px; height: 800px; overflow: hidden;
+    font-family: Vazirmatn, Tahoma, sans-serif;
+    background: radial-gradient(ellipse 900px 500px at 70% 20%, #10b98122, transparent),
+                radial-gradient(ellipse 700px 400px at 20% 80%, #f59e0b18, transparent),
+                #0b0f14;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .dots {
+    position: absolute; inset: 0;
+    background-image: radial-gradient(#ffffff12 1px, transparent 1px);
+    background-size: 24px 24px;
+    -webkit-mask-image: radial-gradient(ellipse 800px 500px at 50% 50%, black 30%, transparent 70%);
+  }
+  .card { text-align: center; z-index: 2; max-width: 760px; }
+  .logo { display: inline-flex; align-items: center; gap: 14px; margin-bottom: 28px; }
+  .logo-mark {
+    width: 64px; height: 64px; border-radius: 18px;
+    background: linear-gradient(135deg, #10b981, #0d9488);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 34px; font-weight: 800; color: white;
+    box-shadow: 0 12px 40px #10b98155;
+  }
+  .logo-name { color: #f1f5f9; font-size: 30px; font-weight: 700; }
+  h1 { color: #f8fafc; font-size: 44px; font-weight: 800; line-height: 1.5; margin-bottom: 16px; }
+  h1 .accent { color: #34d399; }
+  p.sub { color: #94a3b8; font-size: 21px; line-height: 2; margin-bottom: 36px; }
+  .cta {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white; font-size: 22px; font-weight: 700;
+    padding: 16px 44px; border-radius: 16px;
+    box-shadow: 0 16px 48px #10b98166;
+  }
+  .trust { margin-top: 28px; color: #64748b; font-size: 15px; display: flex; gap: 18px; justify-content: center; }
+  .trust span { display: inline-flex; align-items: center; gap: 6px; }
+  .check { color: #34d399; font-size: 13px; }
+</style>
+</head>
+<body>
+  <div class="dots"></div>
+  <div class="card">
+    <div class="logo">
+      <div class="logo-mark">ه</div>
+      <div class="logo-name">هوش حساب</div>
+    </div>
+    <h1>همهٔ حسابداری کسب‌وکار شما، <span class="accent">در یک نرم‌افزار ایرانی</span></h1>
+    <p class="sub">اتصال رسمی به سامانهٔ مودیان · ۱۶ ماژول تخصصی · دستیار هوش مصنوعی · اپ موبایل</p>
+    <div class="cta">شروع رایگان ۷ روزه — بدون کارت بانکی</div>
+    <div class="trust">
+      <span><span class="check">✓</span> ۷ روز ضمانت بازگشت</span>
+      <span><span class="check">✓</span> مهاجرت رایگان داده</span>
+      <span><span class="check">✓</span> قیمت همیشگی قفل‌شده</span>
+    </div>
+  </div>
+</body>
+</html>
